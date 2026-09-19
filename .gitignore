@@ -1,0 +1,27 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Colab local scratch
+/tmp/
+
+# Trained artifacts (regenerable, big) — comment these out if you want to commit them
+adapters/*/adapter_model.safetensors
+adapters/*/adapter_model.bin
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
