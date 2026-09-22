@@ -4,7 +4,7 @@
 *A preference-signal ablation on Llama-3.2-3B-Instruct.*
 
 <!-- Author: replace with your name / affiliation / contact -->
-> **Author:** {{YOUR NAME}} · {{AFFILIATION}} · {{EMAIL_OR_GH}}
+> **Author:** {{Abbas Sani}} · {{INTELLICODE SYSTEMS}} · {{https://github.com/avvas200}}
 
 ---
 
@@ -19,18 +19,17 @@ This project isolates the preference signal as the sole variable. We fix the bas
 
 Three seeds per condition. Pre-registered statistical tests (McNemar exact per-seed, pooled McNemar with Bonferroni α=0.025, paired-bootstrap CIs). Mechanistic follow-up on the trained LoRA adapters (per-token KL divergence vs. base, per-module Frobenius weight-norm audit, discordant-problem structural coding).
 
-<!-- Fill in from Notebook 05's copy-paste block after the pipeline finishes -->
-
 **Headline findings** (n = 500 test problems, 3 seeds each; 95% CIs from paired bootstrap):
 
 | Condition | Preference source | Accuracy (mean ± sd) | Δ vs baseline | Pooled McNemar p | Decision |
 |---|---|---|---|---|---|
-| Baseline | — | {{BASELINE_ACCURACY}} | — | — | — |
-| A | UltraFeedback (500 pairs) | {{ACC_A_MEAN}} ± {{ACC_A_SD}} | {{DELTA_A}} pp | {{P_A}} | H1: {{H1_DECISION}} |
-| B | Self-generated reasoning (500 pairs) | {{ACC_B_MEAN}} ± {{ACC_B_SD}} | {{DELTA_B}} pp | {{P_B}} | H2: {{H2_DECISION}} |
+| Baseline | — | 68.4% (342/500) | — | — | — |
+| A | UltraFeedback (500 pairs) | 68.1% ± 0.4 pp | −0.3 pp | 0.405 | H1 supported (null replicated) |
+| B | Self-generated reasoning (500 pairs) | 67.7% ± 0.4 pp | −0.7 pp | 0.351 | H2 **not** supported |
 
-<!-- After running Notebook 05, uncomment and check the figure renders on GitHub. Path is relative to repo root. -->
-<!-- ![Main results](results/figures/main_results.png) -->
+**In one line:** neither preference source moved GSM8K accuracy at this scale, but the *mechanism* underneath the shared null differs — Condition A leaves 81% of greedy-decoded responses byte-identical to baseline, while Condition B actually changes 59% of them and their effects roughly cancel (13 rescues vs. 17 breaks, ~40% of which are extraction artifacts rather than reasoning changes). The pre-registered decision rule for H2 (mean Δ ≥ +3 pp, pooled p < 0.025, all per-seed CIs excluding zero) fails on all three criteria; the mechanistic profile is consistent with 500-pair outcome-verified DPO acting as diffuse regularization rather than reasoning-quality signal at this model scale.
+
+![Main results](results/figures/main_results.png)
 
 Full write-up in [REPORT.md](REPORT.md). Full pre-registered protocol in [RESEARCH_PLAN.md](RESEARCH_PLAN.md).
 
@@ -40,10 +39,10 @@ Full write-up in [REPORT.md](REPORT.md). Full pre-registered protocol in [RESEAR
 
 This is a small empirical study executed at T4-class compute (Colab free-tier). The claim is not state-of-the-art anything — it is a clean, pre-registered ablation with honest statistics and a mechanistic follow-up. What makes it worth reading is the *design discipline*, not the numbers:
 
-- **Pre-registered decision rules.** `RESEARCH_PLAN.md` §4 commits to specific thresholds (mean Δ ≥ +3 pp, pooled p < 0.025, all per-seed CIs excluding zero) *before* any DPO run finishes. The decision function is code in `src/stats.py`; no post-hoc goalpost-moving is possible.
+- **Pre-registered decision rules.** `RESEARCH_PLAN.md` §4 commits to specific thresholds (mean Δ ≥ +3 pp, pooled p < 0.025, all per-seed CIs excluding zero) *before* any DPO run finishes. The decision function is code in `src/stats.py`; no post-hoc goalpost-moving is possible. In this run both hypotheses' decisions matched what the code said the day it was written: H1 supported, H2 not supported.
 - **A shared training driver.** `src/train.py` defines one `DEFAULT_DPO_HPARAMS` dict that both DPO notebooks read from. The two conditions cannot silently diverge on hyperparameters.
 - **Resumable everything.** Every long-running loop (eval, preference sampling, DPO training) checkpoints to Google Drive and picks up cleanly from Colab session drops.
-- **Mechanistic layer, not just accuracy.** Notebook 06 characterizes *what changed inside the model* (per-token KL vs. base, per-module Frobenius weight-norm audit), so the report says more than "accuracy went from X to Y."
+- **Mechanistic layer, not just accuracy.** Notebook 06 characterizes *what changed inside the model* (per-token KL vs. base, per-module Frobenius weight-norm audit, discordant-problem structural coding), so the report says more than "accuracy went from X to Y." In this study specifically, the mechanistic layer is what makes the shared null informative rather than uninformative — it shows the two conditions are producing the same accuracy through fundamentally different behavioral profiles.
 
 ---
 
@@ -116,8 +115,9 @@ Named up-front, discussed in REPORT.md §7:
 
 - **Single base-model family and size.** Results at 3B do not necessarily generalize to 7B, 70B, or other model families.
 - **Single benchmark family.** GSM8K captures elementary-arithmetic reasoning. MATH-500, MMLU-STEM, or Big-Bench Hard would tell a fuller story; excluded here for compute reasons.
-- **500 preference pairs per condition.** Small by DPO-literature standards. Larger preference sets might change the picture.
+- **500 preference pairs per condition.** Small by DPO-literature standards. Larger preference sets might change the picture — this study cannot distinguish "signal absent" from "signal present but under-powered."
 - **Final-answer verifier only.** Condition B's "correct" chains can contain broken reasoning that lands on the right number by chance. Process supervision (Lightman et al. 2024) is a more expensive but principled alternative, noted as future work.
+- **Extractor confound.** The strict-last-number answer extractor is sensitive to trailing-numeric response formatting; ~40% of Condition B's discordant activity is attributable to formatting shifts rather than reasoning changes. This does not affect the aggregate accuracy statistics (the effect is roughly symmetric) but it is documented in REPORT.md §6.3 as a caveat on the discordant counts.
 - **T4-scale.** Every choice in this project — quantization, batch size, LoRA rank, preference set size — was constrained by fitting into Colab free-tier's 16 GB VRAM and ~4h session limit. The scientific findings are honest at that scale; extrapolating to larger scales is future work.
 
 ---
@@ -128,11 +128,11 @@ If this study or its infrastructure is useful to you (edit the fields to match y
 
 ```bibtex
 @misc{yourkey2026dporeasoning,
-  author = {Your Name},
+  author = {Abbas Sani},
   title  = {When does preference optimization transfer to reasoning?
             A preference-signal ablation on Llama-3.2-3B},
   year   = {2026},
-  howpublished = {\url{https://github.com/YOUR_GH/dpo-reasoning-transfer}},
+  howpublished = {\url{https://github.com/avvas200/dpo-reasoning-transfer}},
   note   = {Colab free-tier reproducible pipeline}
 }
 ```

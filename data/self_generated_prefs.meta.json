@@ -1,0 +1,24 @@
+{
+  "sampling_config": {
+    "K": 4,
+    "temperature": 0.8,
+    "top_p": 0.95,
+    "max_new_tokens": 384,
+    "seed": 42
+  },
+  "source": {
+    "dataset": "openai/gsm8k",
+    "split": "train",
+    "max_source_problems": 1500
+  },
+  "yield": {
+    "n_processed": 1203,
+    "n_pairs": 500,
+    "yield_rate": 0.41562759767248547,
+    "n_attempted_this_run": 503
+  },
+  "output": {
+    "pairs_jsonl": "/content/drive/MyDrive/dpo-reasoning-transfer/data/self_generated_prefs.jsonl",
+    "processed_log": "/content/drive/MyDrive/dpo-reasoning-transfer/data/self_generated_prefs.processed.log"
+  }
+}
