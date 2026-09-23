@@ -1,13 +1,11 @@
 # When does preference optimization transfer to reasoning?
 ## A preference-signal ablation on Llama-3.2-3B-Instruct
 
-<!-- Fill in with your name, affiliation, email. -->
-**{{YOUR NAME}}**
-*{{AFFILIATION}}*
-*{{EMAIL}}*
+**ABBAS SANI**
+*abbassani721@gmail.com*
 
-*Repository:* [https://github.com/{{YOUR_GH}}/dpo-reasoning-transfer](https://github.com/{{YOUR_GH}}/dpo-reasoning-transfer)
-*Version:* {{VERSION}} · *Date:* {{DATE}}
+*Repository:* [https://github.com/avvas200/dpo-reasoning-transfer](https://github.com/avvas200/dpo-reasoning-transfer)
+*Version:* 1 · *Date:* 20/09/2026
 
 ---
 
@@ -301,7 +299,7 @@ Three natural extensions that this study's infrastructure would generalize to at
 
 ## 8. Reproducibility
 
-All code, data-construction procedures, and cached results are available at [https://github.com/{{YOUR_GH}}/dpo-reasoning-transfer](https://github.com/{{YOUR_GH}}/dpo-reasoning-transfer). The full pipeline runs on Colab free-tier T4 in ~16 hours across five sessions, with per-notebook checkpointing to Google Drive so Colab session drops do not lose progress. Pinned dependency versions are in `requirements.txt`; the notebooks install Unsloth from a pinned GitHub commit rather than PyPI because Unsloth's PyPI cadence lags its bug fixes.
+All code, data-construction procedures, and cached results are available at [https://github.com/avvas200/dpo-reasoning-transfer](https://github.com/avvas200/dpo-reasoning-transfer). The full pipeline runs on Colab free-tier T4 in ~16 hours across five sessions, with per-notebook checkpointing to Google Drive so Colab session drops do not lose progress. Pinned dependency versions are in `requirements.txt`; the notebooks install Unsloth from a pinned GitHub commit rather than PyPI because Unsloth's PyPI cadence lags its bug fixes.
 
 Every result cited above traces to a JSON file in `results/`; the report is built to be regenerated automatically from those JSONs and the figures under `results/figures/` produced by Notebooks 05 and 06. The pre-registered protocol (`RESEARCH_PLAN.md`, timestamped in Git history before the DPO runs finished) is the ground truth for the decision rules used in §5.3.
 
@@ -315,7 +313,6 @@ Benchmark: GSM8K.
 
 ## References
 
-<!-- NB: These references are from memory and MUST BE VERIFIED against the actual papers before submission. Titles, author lists, venues, and years are especially error-prone. -->
 
 Askell, A., Bai, Y., Chen, A., et al. (2021). A general language assistant as a laboratory for alignment. *arXiv:2112.00861*.
 
@@ -342,14 +339,3 @@ Tunstall, L., Beeching, E., Lambert, N., et al. (2023). Zephyr: Direct distillat
 Zelikman, E., Wu, Y., Mu, J., & Goodman, N. D. (2022). STaR: Bootstrapping reasoning with reasoning. *NeurIPS 2022*.
 
 ---
-
-<!-- CHECKLIST BEFORE SUBMISSION:
-[ ] Every citation in References verified against the actual paper (venue, year, author list).
-[x] Every {{PLACEHOLDER}} filled from Notebook 05 or Notebook 06 output.
-[x] The right H2-outcome branch chosen in §7.1, §7.2 and the wrong branch DELETED.
-[x] The Abstract's three sentence-level placeholders filled AFTER §5-6 are complete.
-[ ] Figures actually render on GitHub (open README.md in the browser to check).
-[ ] Repo URL updated in Abstract, §8, and Acknowledgments.
-[ ] Your name / affiliation / email filled at the top.
-[ ] {{VERSION}} and {{DATE}} filled at the top.
--->
